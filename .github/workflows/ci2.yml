@@ -86,3 +86,18 @@ jobs:
         path: |
           examples_install_rv32
           examples_install_rv64
+
+  run_tests:
+    runs-on: ubuntu-22.04
+    needs: [build_etiss build_examples]
+
+    strategy:
+      matrix:
+        bits: ["32", "64"]
+        jit-engine: ["TCC", "GCC", "LLVM"]
+
+    steps:
+    - name: Fetch precompiled artifacts
+      uses: actions/download-artifact@v4
+    - name: ls
+      run: ls -R

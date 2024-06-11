@@ -102,4 +102,5 @@ jobs:
 
     - name: Run test
       run: |
+        chmod +x etiss_prebuilt/bin/bare_etiss_processor
         etiss_prebuilt/bin/bare_etiss_processor -iexamples_prebuilt_rv${{matrix.bits}}/ini/${{matrix.test_program}}.ini --jit.type=${{matrix.jit_engin}}JIT

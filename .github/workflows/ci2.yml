@@ -89,7 +89,7 @@ jobs:
 
   run_tests:
     runs-on: ubuntu-22.04
-    needs: [build_etiss build_examples]
+    needs: [build_etiss, build_examples]
 
     strategy:
       matrix:

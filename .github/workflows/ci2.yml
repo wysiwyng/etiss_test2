@@ -93,10 +93,13 @@ jobs:
     strategy:
       matrix:
         bits: ["32", "64"]
-        jit-engine: ["TCC", "GCC", "LLVM"]
+        jit_engine: ["TCC", "GCC", "LLVM"]
+        test_program: ["example_c", "example_cpp", "test_cases"]
 
     steps:
     - name: Fetch precompiled artifacts
       uses: actions/download-artifact@v4
-    - name: ls
-      run: ls -R
+
+    - name: Run test
+      run: |
+        etiss_prebuilt/bin/bare_etiss_processor -iexamples_prebuilt_rv${{matrix.bits}}/ini/${{matrix.test_program}}.ini --jit.type=${{matrix.jit_engin}}JIT

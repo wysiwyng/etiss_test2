@@ -12,7 +12,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
       with:
-        path: etiss
+        path: etiss_source
 
     - name: ls
       run: |

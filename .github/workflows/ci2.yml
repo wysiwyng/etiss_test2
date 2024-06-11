@@ -11,7 +11,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v4
-      path: etiss
+      with:
+        path: etiss
 
     - name: ls
       run: |

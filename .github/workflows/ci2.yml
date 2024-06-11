@@ -57,7 +57,7 @@ jobs:
       run: |
         wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
         tar xf xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
-        mv xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz riscv_tc
+        mv xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64 riscv_tc
 
     - name: Install Ninja
       run: |

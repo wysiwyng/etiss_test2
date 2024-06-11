@@ -38,12 +38,51 @@ jobs:
       run: |
         cmake --build etiss_build --config $BUILD_TYPE --target install
 
-    - name: Compress ETISS
-      run: |
-        tar -cvf etiss.tar etiss_install
-
     - name: Upload compiled ETISS
       uses: actions/upload-artifact@v4
       with:
         name: etiss_prebuilt
         path: etiss_install
+
+  build_examples:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        repository: tum-ei-eda/etiss_riscv_examples
+        path: examples_source
+
+    - name: Install cross compiler
+      run: |
+        wget https://github.com/xpack-dev-tools/riscv-none-elf-gcc-xpack/releases/download/v13.2.0-2/xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+        tar xf xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz
+        mv xpack-riscv-none-elf-gcc-13.2.0-2-linux-x64.tar.gz riscv_tc
+
+    - name: Install Ninja
+      run: |
+        sudo apt-get update
+        apt-get install ninja-build
+
+    - name: Configure examples
+      run: |
+        cmake -B examples_build_rv64 -S examples_source -DCMAKE_TOOLCHAIN_FILE=rv64gc-toolchain.cmake -DRISCV_TOOLCHAIN_BASENAME=riscv-none-elf -DRISCV_TOOLCHAIN_PREFIX=$GITHUB_WORKSPACE/riscv_tc -DCMAKE_INSTALL_PREFIX=examples_install_rv64 -G Ninja
+        cmake -B examples_build_rv64 -S examples_source -DCMAKE_TOOLCHAIN_FILE=rv64gc-toolchain.cmake -DRISCV_TOOLCHAIN_BASENAME=riscv-none-elf -DRISCV_TOOLCHAIN_PREFIX=$GITHUB_WORKSPACE/riscv_tc -DCMAKE_INSTALL_PREFIX=examples_install_rv64 -G Ninja
+
+    - name: Build examples
+      run: |
+        cmake --build examples_build_rv32 --config $BUILD_TYPE
+        cmake --build examples_build_rv64 --config $BUILD_TYPE
+
+    - name: Install examples
+      run: |
+        cmake --build examples_build_rv32 --config $BUILD_TYPE --target install
+        cmake --build examples_build_rv64 --config $BUILD_TYPE --target install
+
+    - name: Upload prebuilt examples
+      uses: actions/upload-artifact@v4
+      with:
+        name: examples_prebuilt
+        path: |
+          examples_install_rv32
+          examples_install_rv64

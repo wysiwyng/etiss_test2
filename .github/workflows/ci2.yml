@@ -1,0 +1,37 @@
+name: Build ETISS and run smoke tests
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+env:
+  BUILD_TYPE: Release
+
+jobs:
+  build_etiss:
+    runs-on: ubuntu-22.04
+
+    steps:
+    - uses: actions/checkout@v4
+      path: etiss
+
+    - name: ls
+      run: |
+        pwd
+        ls
+
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libboost-system-dev libboost-filesystem-dev libboost-program-options-dev\
+          llvm-11-dev libclang-11-dev clang-11
+
+    - name: CMake config
+      run: |
+        cmake -B build -S . -DCMAKE_INSTALL_PREFIX=
+
+    - name: CMake build
+      run: |
+        cmake --build build --config $BUILD_TYPE --parallel

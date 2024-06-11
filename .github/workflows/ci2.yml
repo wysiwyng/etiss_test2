@@ -28,8 +28,8 @@ jobs:
 
     - name: CMake config
       run: |
-        cmake -B etiss_build -S etiss_source -DCMAKE_INSTALL_PREFIX=etiss_install -G ninja
+        cmake -B etiss_build -S etiss_source -DCMAKE_INSTALL_PREFIX=etiss_install -G Ninja
 
     - name: CMake build
       run: |
-        cmake --build etiss_build --config $BUILD_TYPE --parallel
+        cmake --build etiss_build --config $BUILD_TYPE

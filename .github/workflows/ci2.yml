@@ -66,7 +66,7 @@ jobs:
 
     - name: Configure examples
       run: |
-        cmake -B examples_build_rv64 -S examples_source -DCMAKE_TOOLCHAIN_FILE=rv64gc-toolchain.cmake -DRISCV_TOOLCHAIN_BASENAME=riscv-none-elf -DRISCV_TOOLCHAIN_PREFIX=$GITHUB_WORKSPACE/riscv_tc -DCMAKE_INSTALL_PREFIX=examples_install_rv64 -G Ninja
+        cmake -B examples_build_rv32 -S examples_source -DCMAKE_TOOLCHAIN_FILE=rv32gc-toolchain.cmake -DRISCV_TOOLCHAIN_BASENAME=riscv-none-elf -DRISCV_TOOLCHAIN_PREFIX=$GITHUB_WORKSPACE/riscv_tc -DCMAKE_INSTALL_PREFIX=examples_install_rv32 -G Ninja
         cmake -B examples_build_rv64 -S examples_source -DCMAKE_TOOLCHAIN_FILE=rv64gc-toolchain.cmake -DRISCV_TOOLCHAIN_BASENAME=riscv-none-elf -DRISCV_TOOLCHAIN_PREFIX=$GITHUB_WORKSPACE/riscv_tc -DCMAKE_INSTALL_PREFIX=examples_install_rv64 -G Ninja
 
     - name: Build examples

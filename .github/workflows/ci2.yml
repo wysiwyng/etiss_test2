@@ -33,3 +33,17 @@ jobs:
     - name: CMake build
       run: |
         cmake --build etiss_build --config $BUILD_TYPE
+
+    - name: CMake install
+      run: |
+        cmake --build etiss_build --config $BUILD_TYPE --target install
+
+    - name: Compress ETISS
+      run: |
+        tar -cvf etiss.tar etiss_install
+
+    - name: Upload compiled ETISS
+      uses: actions/upload-artifact@v4
+      with:
+        name: etiss_prebuilt
+        path: etiss_install

@@ -24,11 +24,12 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libboost-system-dev libboost-filesystem-dev libboost-program-options-dev\
           llvm-11-dev libclang-11-dev clang-11
+          ninja-build
 
     - name: CMake config
       run: |
-        cmake -B build -S . -DCMAKE_INSTALL_PREFIX=
+        cmake -B etiss_build -S etiss_source -DCMAKE_INSTALL_PREFIX=etiss_install -G ninja
 
     - name: CMake build
       run: |
-        cmake --build build --config $BUILD_TYPE --parallel
+        cmake --build etiss_build --config $BUILD_TYPE --parallel

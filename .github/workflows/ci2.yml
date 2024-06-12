@@ -136,7 +136,7 @@ jobs:
     - name: Save Benchmark results
       uses: actions/upload-artifact@v4
       with:
-        name: run_${{matrix.jit_engine}}_${{matrix.bits}}_${{matrix.run_no}}.json
+        name: run_${{matrix.jit_engine}}_${{matrix.bits}}_${{matrix.run_no}}
         path: run_${{matrix.jit_engine}}_${{matrix.bits}}_${{matrix.run_no}}.json
 
   merge_benchmark_results:
@@ -148,11 +148,11 @@ jobs:
       uses: actions/download-artifact@v4
       with:
         path: dhry_results
-        pattern: run_*.json
+        pattern: run_*
         merge-multiple: true
 
     - name: Upload merged archive
       uses: actions/upload-artifact@v4
       with:
-        name: dhry_results.zip
+        name: dhry_results
         path: dhry_results

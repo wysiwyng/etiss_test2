@@ -131,7 +131,7 @@ jobs:
     - name: Run benchmark
       run: |
         chmod +x etiss_install/bin/bare_etiss_processor
-        etiss_install/bin/bare_etiss_processor -iexamples_install_rv${{matrix.bits}}/ini/dhry.ini --jit.type=${{matrix.jit_engine}}JIT --vp.stats_file_path=${{runner.workspace}}/run_${{matrix.jit_engine}}_${{matrix.run_no}}.json
+        etiss_install/bin/bare_etiss_processor -iexamples_install_rv${{matrix.bits}}/ini/dhry.ini --jit.type=${{matrix.jit_engine}}JIT --vp.stats_file_path=${{github.workspace}}/run_${{matrix.jit_engine}}_${{matrix.run_no}}.json
 
     - name: Save Benchmark results
       uses: actions/upload-artifact@v4

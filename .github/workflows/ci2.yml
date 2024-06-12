@@ -86,7 +86,7 @@ jobs:
         name: examples_install_rv${{matrix.bits}}
         path: examples_install_rv${{matrix.bits}}
 
-  run_tests:
+  run_examples:
     runs-on: ubuntu-22.04
     needs: [build_etiss, build_examples]
 
@@ -109,3 +109,51 @@ jobs:
       run: |
         chmod +x etiss_install/bin/bare_etiss_processor
         etiss_install/bin/bare_etiss_processor -iexamples_install_rv${{matrix.bits}}/ini/${{matrix.test_program}}.ini --jit.type=${{matrix.jit_engine}}JIT
+
+  run_benchmarks:
+    runs-on: ubuntu-22.04
+    needs: [build_etiss, build_examples]
+
+    strategy:
+      matrix:
+        bits: ["32", "64"]
+        jit_engine: ["TCC", "GCC", "LLVM"]
+        run_no: [1, 2, 3, 4, 5]
+
+    steps:
+    - name: Fetch precompiled artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libboost-filesystem-dev libboost-program-options-dev libllvm11
+
+    - name: Run benchmark
+      run: |
+        chmod +x etiss_install/bin/bare_etiss_processor
+        etiss_install/bin/bare_etiss_processor -iexamples_install_rv${{matrix.bits}}/ini/dhry.ini --jit.type=${{matrix.jit_engine}}JIT --vp.stats_file_path=${{runner.workspace}}/run_${{matrix.jit_engine}}_${{matrix.run_no}}.json
+
+    - name: Save Benchmark results
+      uses: actions/upload-artifact@v4
+      with:
+        name: run_${{matrix.jit_engine}}_${{matrix.run_no}}.json
+        path: run_${{matrix.jit_engine}}_${{matrix.run_no}}.json
+
+  merge_benchmark_results:
+    runs-on: ubuntu-22.04
+    needs: run_benchmarks
+
+    steps:
+    - name: Fetch artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: dhry_results
+        pattern: run_*.json
+        merge-multiple: true
+
+    - name: Upload merged archive
+      uses: actions/upload-artifact@v4
+      with:
+        name: dhry_results.zip
+        path: dhry_results

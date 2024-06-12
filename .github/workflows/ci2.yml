@@ -144,15 +144,9 @@ jobs:
     needs: run_benchmarks
 
     steps:
-    - name: Fetch artifacts
-      uses: actions/download-artifact@v4
-      with:
-        path: dhry_results
-        pattern: run_*
-        merge-multiple: true
-
-    - name: Upload merged archive
-      uses: actions/upload-artifact@v4
+    - name: Download artifacts
+      uses: actions/upload-artifact/merge@v4
       with:
         name: dhry_results
-        path: dhry_results
+        pattern: run_*
+        delete-merged: true

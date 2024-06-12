@@ -31,7 +31,7 @@ jobs:
 
     - name: CMake build
       run: |
-        cmake --build etiss_build
+        cmake --build etiss_build -j$(nproc)
 
     - name: CMake install
       run: |
@@ -73,7 +73,7 @@ jobs:
 
     - name: Build examples
       run: |
-        cmake --build examples_build_rv${{matrix.bits}}
+        cmake --build examples_build_rv${{matrix.bits}} -j$(nproc)
 
     - name: Install examples
       run: |
